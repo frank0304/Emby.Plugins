@@ -6,6 +6,9 @@
         {
             internal const string Info = "info";
             internal const string Channels = "channels";
+            internal const string Events = "events";
+            internal const string Recordings = "recordings";
+            internal const string Timers = "timers";
         }
     }
 }

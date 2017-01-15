@@ -6,8 +6,6 @@ namespace LiveTv.Vdr.RestfulApi.Resources
 {
     internal class InfoResource :IRootResource
     {
-        private DateTime _time;
-
         public string Version { get; set; }
         public long Time { get; set; }        
         public List<RestService> Services { get; set; }

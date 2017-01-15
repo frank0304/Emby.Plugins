@@ -102,7 +102,7 @@ namespace LiveTv.Vdr
 
         public async Task<IEnumerable<ChannelInfo>> GetChannelsAsync(CancellationToken cancellationToken)
         {
-            _logger.Info("[LiveTV.Vdr]  {0}...", nameof(GetStatusInfoAsync));
+            _logger.Info("[LiveTV.Vdr]  {0}...", nameof(GetChannelsAsync));
 
             var channelsResource = await RestfulApiClient.RequestChannelsResource(cancellationToken);
             
@@ -132,22 +132,64 @@ namespace LiveTv.Vdr
 
         public Task<ImageStream> GetProgramImageAsync(string programId, string channelId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            // Leave as is. This is handled by supplying image url to ChannelInfo
+            return null;
         }
 
-        public Task<IEnumerable<ProgramInfo>> GetProgramsAsync(string channelId, DateTime startDateUtc, DateTime endDateUtc, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ProgramInfo>> GetProgramsAsync(string channelId, DateTime startDateUtc, DateTime endDateUtc, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Info("[LiveTV.Vdr]  {0}: ChannelID={1}, StartDate={2}, EndDate={3}", nameof(GetProgramsAsync), channelId, startDateUtc, endDateUtc);
+            List<ProgramInfo> programInfoList = new List<ProgramInfo>();
+
+            var eventsResource = await RestfulApiClient.RequestEventsResource(cancellationToken, channelId, endDateUtc);
+            
+            foreach (EventResource eventRes in eventsResource.Events)
+            {
+                programInfoList.Add(Converters.EventResourceToProgramInfo(eventRes));
+            }
+            return programInfoList;
+
+            /*
+              _logger.Info("[NextPvr] Start GetPrograms Async, retrieve all Programs");
+            await EnsureConnectionAsync(cancellationToken).ConfigureAwait(false);
+            var baseUrl = Plugin.Instance.Configuration.WebServiceUrl;
+
+            var options = new HttpRequestOptions()
+            {
+                CancellationToken = cancellationToken,
+                Url = string.Format("{0}/public/GuideService/Listing?sid={1}&stime={2}&etime={3}&channelId={4}",
+                baseUrl, Sid,
+                ApiHelper.GetCurrentUnixTimestampSeconds(startDateUtc).ToString(_usCulture),
+                ApiHelper.GetCurrentUnixTimestampSeconds(endDateUtc).ToString(_usCulture),
+                channelId)
+            };
+
+            using (var stream = await _httpClient.Get(options).ConfigureAwait(false))
+            {
+                return new ListingsResponse(baseUrl).GetPrograms(stream, _jsonSerializer, channelId, _logger).ToList();
+            } 
+             */
         }
 
         public Task<ImageStream> GetRecordingImageAsync(string recordingId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Info("[LiveTV.Vdr]  {0} not implemented", nameof(GetRecordingImageAsync));
+            return null; //TODO:
         }
 
-        public Task<IEnumerable<RecordingInfo>> GetRecordingsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<RecordingInfo>> GetRecordingsAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Info("[LiveTV.Vdr]  {0}..", nameof(GetRecordingsAsync));
+            List<RecordingInfo> recordingInfoList = new List<RecordingInfo>();
+
+            var recordingsResource = await RestfulApiClient.RequestRecordingsResource(cancellationToken);
+
+            foreach (RecordingResource recRes in recordingsResource.Recordings)
+            {
+                recordingInfoList.Add(Converters.RecordingResourceToRecordingInfo(recRes));
+            }
+
+            return recordingInfoList;
         }
 
         public Task<MediaSourceInfo> GetRecordingStream(string recordingId, string streamId, CancellationToken cancellationToken)
@@ -183,9 +225,18 @@ namespace LiveTv.Vdr
             };
         }
 
-        public Task<IEnumerable<TimerInfo>> GetTimersAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<TimerInfo>> GetTimersAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Info("[LiveTV.Vdr]  {0}...", nameof(GetTimersAsync));
+            List<TimerInfo> timerInfoList = new List<TimerInfo>();
+
+            var timersResource = await RestfulApiClient.RequestTimersResource(cancellationToken);
+            foreach (Timer timerRes in timersResource.Timers)
+            {
+                timerInfoList.Add(Converters.TimerResourceToTimerInfo(timerRes));
+            }
+
+            return timerInfoList;
         }
 
         public Task RecordLiveStream(string id, CancellationToken cancellationToken)

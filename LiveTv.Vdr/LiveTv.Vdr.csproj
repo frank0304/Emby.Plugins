@@ -42,10 +42,13 @@
     <Compile Include="RestfulApi\Converters.cs" />
     <Compile Include="RestfulApi\Resources\ChannelResource.cs" />
     <Compile Include="RestfulApi\Resources\ChannelsResource.cs" />
+    <Compile Include="RestfulApi\Resources\EventsResource.cs" />
     <Compile Include="RestfulApi\Resources\InfoResource.cs" />
     <Compile Include="RestfulApi\Client\IRestfulApiClient.cs" />
     <Compile Include="RestfulApi\Client\VdrRestfulApiClient.cs" />
     <Compile Include="RestfulApi\Resources\IRootResource.cs" />
+    <Compile Include="RestfulApi\Resources\RecordingsResource.cs" />
+    <Compile Include="RestfulApi\Resources\TimersResource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MediaBrowser.Common, Version=3.1.6221.26789, Culture=neutral, processorArchitecture=MSIL">

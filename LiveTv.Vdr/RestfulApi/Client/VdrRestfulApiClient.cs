@@ -39,7 +39,24 @@ namespace LiveTv.Vdr.RestfulApi.Client
         public async Task<ChannelsResource> RequestChannelsResource(CancellationToken cancellationToken)
         {
             return await RequestResource<ChannelsResource>(cancellationToken, Constants.ResourceName.Channels);
-        }        
+        }
+
+        public async Task<EventsResource> RequestEventsResource(CancellationToken cancellationToken, string channelId, DateTime endDate)
+        {
+            // TODO: endDate check before return
+            var resourceStr = string.Format("{0}/{1}", Constants.ResourceName.Events, channelId);
+            return await RequestResource<EventsResource>(cancellationToken, resourceStr);
+        }
+        
+        public async Task<RecordingsResource> RequestRecordingsResource(CancellationToken cancellationToken)
+        {
+            return await RequestResource<RecordingsResource>(cancellationToken, Constants.ResourceName.Recordings);
+        }
+
+        public async Task<TimersResource> RequestTimersResource(CancellationToken cancellationToken)
+        {
+            return await RequestResource<TimersResource>(cancellationToken, Constants.ResourceName.Timers);
+        }
 
         #endregion
 
@@ -58,7 +75,6 @@ namespace LiveTv.Vdr.RestfulApi.Client
             }
 
             return restResource;
-        }
-               
+        }        
     }
 }
