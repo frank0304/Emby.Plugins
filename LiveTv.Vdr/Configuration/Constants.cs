@@ -2,13 +2,15 @@
 {
     internal static class Constants
     {
+        //internal const string ResourceFormat = ".json";
+
         internal static class ResourceName
         {
-            internal const string Info = "info";
-            internal const string Channels = "channels";
-            internal const string Events = "events";
-            internal const string Recordings = "recordings";
-            internal const string Timers = "timers";
+            internal const string Info = "info.json";
+            internal const string Channels = "channels.json";
+            internal const string Events = "events.json";
+            internal const string Recordings = "recordings.json";
+            internal const string Timers = "timers.json";
         }
     }
 }

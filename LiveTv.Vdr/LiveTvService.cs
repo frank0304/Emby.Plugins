@@ -133,7 +133,8 @@ namespace LiveTv.Vdr
         public Task<ImageStream> GetProgramImageAsync(string programId, string channelId, CancellationToken cancellationToken)
         {
             // Leave as is. This is handled by supplying image url to ChannelInfo
-            return null;
+            throw new NotImplementedException();
+            //return null;
         }
 
         public async Task<IEnumerable<ProgramInfo>> GetProgramsAsync(string channelId, DateTime startDateUtc, DateTime endDateUtc, CancellationToken cancellationToken)
@@ -142,11 +143,12 @@ namespace LiveTv.Vdr
             List<ProgramInfo> programInfoList = new List<ProgramInfo>();
 
             var eventsResource = await RestfulApiClient.RequestEventsResource(cancellationToken, channelId, endDateUtc);
-            
+
             foreach (EventResource eventRes in eventsResource.Events)
             {
                 programInfoList.Add(Converters.EventResourceToProgramInfo(eventRes));
             }
+            
             return programInfoList;
 
             /*

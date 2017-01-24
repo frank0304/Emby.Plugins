@@ -29,7 +29,7 @@ namespace LiveTv.Vdr.RestfulApi
             return new ProgramInfo()
             {
                 ChannelId = eventRes.Channel,
-                Id = eventRes.Id.ToString(),
+                Id = eventRes.Channel + eventRes.Id.ToString(),
                 Name = eventRes.Title,
                 Overview = eventRes.Description,
                 StartDate = UnixTimeStampToDateTime(eventRes.Start_time).ToUniversalTime(),
@@ -100,6 +100,13 @@ namespace LiveTv.Vdr.RestfulApi
             return (long)span.TotalSeconds;
         }
 
-        
+        public static long DateTimeToUnixTimeStamp2(DateTime dateTime)
+        {
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
+            TimeSpan span = (dateTime.ToLocalTime() - DateTime.Now.ToLocalTime());
+            return (long)span.TotalSeconds;
+        }
+
+
     }
 }

@@ -43,8 +43,9 @@ namespace LiveTv.Vdr.RestfulApi.Client
 
         public async Task<EventsResource> RequestEventsResource(CancellationToken cancellationToken, string channelId, DateTime endDate)
         {
-            // TODO: endDate check before return
-            var resourceStr = string.Format("{0}/{1}", Constants.ResourceName.Events, channelId);
+            long span = (long) (endDate.ToLocalTime() - DateTime.Now.ToLocalTime()).TotalSeconds;
+
+            var resourceStr = string.Format("{0}/{1}?timespan={2}", Constants.ResourceName.Events, channelId, span);
             return await RequestResource<EventsResource>(cancellationToken, resourceStr);
         }
         
@@ -65,7 +66,7 @@ namespace LiveTv.Vdr.RestfulApi.Client
             var options = new HttpRequestOptions()
             {
                 CancellationToken = cancellationToken,
-                Url = string.Format("{0}/{1}.json", _baseUri, resource)
+                Url = string.Format("{0}/{1}", _baseUri, resource)
             };
 
             T restResource;
