@@ -97,7 +97,7 @@ namespace LiveTv.Vdr
         public Task<ImageStream> GetChannelImageAsync(string channelId, CancellationToken cancellationToken)
         {
             // Leave as is. This is handled by supplying image url to ChannelInfo
-            return null;
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<ChannelInfo>> GetChannelsAsync(CancellationToken cancellationToken)
@@ -125,9 +125,21 @@ namespace LiveTv.Vdr
             throw new NotImplementedException();
         }
 
-        public Task<SeriesTimerInfo> GetNewTimerDefaultsAsync(CancellationToken cancellationToken, ProgramInfo program = null)
+        public async Task<SeriesTimerInfo> GetNewTimerDefaultsAsync(CancellationToken cancellationToken, ProgramInfo program = null)
         {
-            throw new NotImplementedException();
+            _logger.Info("[LiveTV.Vdr]  {0}...", nameof(GetNewTimerDefaultsAsync));
+
+            return await Task.Factory.StartNew(() =>               
+            {
+                return new SeriesTimerInfo
+                {
+                    PostPaddingSeconds = 120, //TODO: if it can't be extracted via Restful api, move to config or extend restful api
+                    PrePaddingSeconds = 120,
+                    RecordAnyChannel = false, // TODO (clarify): from my understanding: important for series timer (let seriestimer look on any channel for creating timers)
+                    RecordAnyTime = true,
+                    RecordNewOnly = false
+                };
+            });
         }
 
         public Task<ImageStream> GetProgramImageAsync(string programId, string channelId, CancellationToken cancellationToken)
