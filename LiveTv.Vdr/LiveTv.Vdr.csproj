@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Configuration\PluginConfiguration.cs" />
     <Compile Include="Configuration\Constants.cs" />
+    <Compile Include="LiveTvHelper.cs" />
     <Compile Include="LiveTvService.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,9 +71,7 @@
   <ItemGroup>
     <Content Include="Configuration\PluginConfigurationPAge.html" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(TargetPath) "C:\Users\Fire\AppData\Roaming\Emby-Server\plugins" /y</PostBuildEvent>

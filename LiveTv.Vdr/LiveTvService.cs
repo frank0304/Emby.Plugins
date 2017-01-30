@@ -74,9 +74,10 @@ namespace LiveTv.Vdr
             throw new NotImplementedException();
         }
 
-        public Task CloseLiveStream(string id, CancellationToken cancellationToken)
+        public async Task CloseLiveStream(string id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Debug("[LiveTV.Vdr]  {0}...", nameof(CloseLiveStream));
+            _logger.Info("[LiveTV.Vdr] Closing stream" + id);
         }
 
         public Task CreateSeriesTimerAsync(SeriesTimerInfo info, CancellationToken cancellationToken)
@@ -115,13 +116,20 @@ namespace LiveTv.Vdr
             return channelInfoList;
         }
 
-        public Task<MediaSourceInfo> GetChannelStream(string channelId, string streamId, CancellationToken cancellationToken)
+        public async Task<MediaSourceInfo> GetChannelStream(string channelId, string streamId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Debug("[LiveTV.Vdr]  {0}...", nameof(GetChannelStream));
+            var baseUri = Plugin.Instance.Configuration.VDR_HttpStream_BaseUrl;
+            var streamUri = string.Format("{0}/TS/{1}", baseUri, channelId);
+
+            _logger.Info("[LiveTV.Vdr] StreamUrl: {0}", streamUri);
+
+            return LiveTvHelper.CreateMediaSourceInfo(channelId, streamUri);
         }
 
         public Task<List<MediaSourceInfo>> GetChannelStreamMediaSources(string channelId, CancellationToken cancellationToken)
         {
+            _logger.Debug("[LiveTV.Vdr]  {0} not implemented", nameof(GetChannelStreamMediaSources));
             throw new NotImplementedException();
         }
 
@@ -144,9 +152,8 @@ namespace LiveTv.Vdr
 
         public Task<ImageStream> GetProgramImageAsync(string programId, string channelId, CancellationToken cancellationToken)
         {
-            // Leave as is. This is handled by supplying image url to ChannelInfo
+            _logger.Debug("[LiveTV.Vdr]  {0} not implemented", nameof(GetRecordingImageAsync));
             throw new NotImplementedException();
-            //return null;
         }
 
         public async Task<IEnumerable<ProgramInfo>> GetProgramsAsync(string channelId, DateTime startDateUtc, DateTime endDateUtc, CancellationToken cancellationToken)
@@ -187,8 +194,8 @@ namespace LiveTv.Vdr
 
         public Task<ImageStream> GetRecordingImageAsync(string recordingId, CancellationToken cancellationToken)
         {
-            _logger.Info("[LiveTV.Vdr]  {0} not implemented", nameof(GetRecordingImageAsync));
-            return null; //TODO:
+            _logger.Debug("[LiveTV.Vdr]  {0} not implemented", nameof(GetRecordingImageAsync));
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<RecordingInfo>> GetRecordingsAsync(CancellationToken cancellationToken)
