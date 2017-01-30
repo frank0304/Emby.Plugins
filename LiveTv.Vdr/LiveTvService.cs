@@ -213,13 +213,29 @@ namespace LiveTv.Vdr
             return recordingInfoList;
         }
 
-        public Task<MediaSourceInfo> GetRecordingStream(string recordingId, string streamId, CancellationToken cancellationToken)
+        public async Task<MediaSourceInfo> GetRecordingStream(string recordingId, string streamId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Debug("[LiveTV.Vdr]  {0}...", nameof(GetRecordingStream));
+            var baseUri = Plugin.Instance.Configuration.VDR_HttpStream_BaseUrl;
+            int recordingNo;
+            if (int.TryParse(recordingId, out recordingNo))
+            {
+                var streamUri = string.Format("{0}/{1}.rec.ts", baseUri, ++recordingNo);
+
+                _logger.Info("[LiveTV.Vdr] Stream recording: {0}", streamUri);
+
+                return LiveTvHelper.CreateMediaSourceInfo(recordingId, streamUri);
+            }
+            else
+            {
+                _logger.Info("[LiveTV.Vdr] Parsing RecordingID failed, recordingId={0}", recordingId);
+                return null;
+            }
         }
 
         public Task<List<MediaSourceInfo>> GetRecordingStreamMediaSources(string recordingId, CancellationToken cancellationToken)
         {
+            _logger.Debug("[LiveTV.Vdr]  {0} not implemented", nameof(GetRecordingStreamMediaSources));
             throw new NotImplementedException();
         }
 
