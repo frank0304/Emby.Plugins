@@ -11,6 +11,8 @@ namespace LiveTv.Vdr.RestfulApi.Client
         Task<ChannelsResource> RequestChannelsResource(CancellationToken cancellationToken);
         Task<EventsResource> RequestEventsResource(CancellationToken cancellationToken, string channelId, DateTime endDate);
         Task<RecordingsResource> RequestRecordingsResource(CancellationToken cancellationToken);
+        Task<int> RequestRecordingNo(string recordingFileName, CancellationToken cancellationToken);
         Task<TimersResource> RequestTimersResource(CancellationToken cancellationToken);
+        Task DeleteRecording(string recordingId, CancellationToken cancellationToken);
     }
 }

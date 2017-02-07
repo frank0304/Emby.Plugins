@@ -53,8 +53,8 @@ namespace LiveTv.Vdr.RestfulApi
         internal static RecordingInfo RecordingResourceToRecordingInfo(RecordingResource recRes)
         {
             return new RecordingInfo()
-            {
-                Id = recRes.Number.ToString(),
+            {                
+                Id = recRes.File_name,
                 ChannelId = recRes.Channel_id,
                 Name = recRes.Event_title,
                 EpisodeTitle = recRes.Event_short_text,

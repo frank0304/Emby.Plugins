@@ -7,11 +7,11 @@ namespace LiveTv.Vdr
 {
     internal class LiveTvHelper
     {
-        internal static MediaSourceInfo CreateMediaSourceInfo(string channelId, string uri)
+        internal static MediaSourceInfo CreateMediaSourceInfo(string id, string uri)
         {
             return new MediaSourceInfo()
             {
-                Id = channelId,
+                Id = id,
                 Path = uri,
                 Protocol = MediaProtocol.Http,
                 SupportsProbing = false,

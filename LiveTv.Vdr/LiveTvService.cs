@@ -57,7 +57,7 @@ namespace LiveTv.Vdr
         public LiveTvService(IHttpClient httpClient, IJsonSerializer jsonSerializer, ILogger logger)
         {
             _logger = logger;
-            _restfulApiClient = new VdrRestfulApiClient(httpClient, jsonSerializer);
+            _restfulApiClient = new VdrRestfulApiClient(httpClient, jsonSerializer, logger);
 
             _logger.Info("[LiveTV.Vdr] Service created.");
         }
@@ -90,9 +90,11 @@ namespace LiveTv.Vdr
             throw new NotImplementedException();
         }
 
-        public Task DeleteRecordingAsync(string recordingId, CancellationToken cancellationToken)
+        public async Task DeleteRecordingAsync(string recordingId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Info("[LiveTV.Vdr]  {0}...", nameof(DeleteRecordingAsync));
+
+            await RestfulApiClient.DeleteRecording(recordingId, cancellationToken);
         }
 
         public Task<ImageStream> GetChannelImageAsync(string channelId, CancellationToken cancellationToken)
@@ -217,14 +219,17 @@ namespace LiveTv.Vdr
         {
             _logger.Debug("[LiveTV.Vdr]  {0}...", nameof(GetRecordingStream));
             var baseUri = Plugin.Instance.Configuration.VDR_HttpStream_BaseUrl;
-            int recordingNo;
-            if (int.TryParse(recordingId, out recordingNo))
+
+            int recordingNo = await RestfulApiClient.RequestRecordingNo(recordingId, cancellationToken);
+
+            if (recordingNo >= 0)
             {
-                var streamUri = string.Format("{0}/{1}.rec.ts", baseUri, ++recordingNo);
+                var streamUri = string.Format("{0}/recordings/{1}.rec.ts", baseUri, ++recordingNo);
 
                 _logger.Info("[LiveTV.Vdr] Stream recording: {0}", streamUri);
 
-                return LiveTvHelper.CreateMediaSourceInfo(recordingId, streamUri);
+                // passing the "recordingId" (filename) as Id didn't work (string maybe too long?, "test" worked?)
+                return LiveTvHelper.CreateMediaSourceInfo(recordingNo.ToString(), streamUri);
             }
             else
             {
