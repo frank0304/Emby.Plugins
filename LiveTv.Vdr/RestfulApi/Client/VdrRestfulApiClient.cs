@@ -46,7 +46,7 @@ namespace LiveTv.Vdr.RestfulApi.Client
             return await RequestResource<ChannelsResource>(cancellationToken, Constants.ResourceName.Channels);
         }
 
-        public async Task<EventsResource> RequestEventsResource(CancellationToken cancellationToken, string channelId, DateTime endDate)
+        public async Task<EventsResource> RequestEventsResource(CancellationToken cancellationToken, string channelId, DateTimeOffset endDate)
         {
             long span = (long) (endDate.ToLocalTime() - DateTime.Now.ToLocalTime()).TotalSeconds;
 

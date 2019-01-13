@@ -5,7 +5,7 @@ namespace LiveTv.Vdr.RestfulApi.Resources
 {
     internal class TimersResource :IRootResource
     {
-        public List<Timer> Timers { get; set; }
+        public List<TimerAPI> Timers { get; set; }
         public int Count { get; set; }
         public int Total { get; set; }
 
@@ -15,7 +15,7 @@ namespace LiveTv.Vdr.RestfulApi.Resources
         }
     }
 
-    internal class Timer
+    internal class TimerAPI
     {
         public string Id { get; set; }
         public int Index { get; set; }

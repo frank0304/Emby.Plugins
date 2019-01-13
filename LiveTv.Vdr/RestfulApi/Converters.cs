@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LiveTv.Vdr.RestfulApi.Resources;
 using MediaBrowser.Controller.LiveTv;
 using MediaBrowser.Model.LiveTv;
@@ -50,21 +51,26 @@ namespace LiveTv.Vdr.RestfulApi
             };
         }
 
-        internal static RecordingInfo RecordingResourceToRecordingInfo(RecordingResource recRes)
+        internal static MyRecordingInfo RecordingResourceToRecordingInfo(RecordingResource recRes)
         {
-            return new RecordingInfo()
-            {                
+            var Genre = recRes.Event_short_text;
+            List<string> GenreList= new List<string>(Genre.Split(' '));
+            return new MyRecordingInfo()
+            {   
+                Inode = recRes.Inode,
+                Path = recRes.File_name,              
                 Id = recRes.File_name,
                 ChannelId = recRes.Channel_id,
                 Name = recRes.Event_title,
-                EpisodeTitle = recRes.Event_short_text,
+                Genres = GenreList,
+                EpisodeTitle = recRes.Event_title,
                 Overview = recRes.Event_description,
                 StartDate = UnixTimeStampToDateTime(recRes.Event_start_time),
                 EndDate = UnixTimeStampToDateTime(recRes.Event_start_time + recRes.Event_duration)
             };
         }
 
-        internal static TimerInfo TimerResourceToTimerInfo(Timer timerRes)
+        internal static TimerInfo TimerResourceToTimerInfo(TimerAPI timerRes)
         {
             return new TimerInfo()
             {
@@ -80,7 +86,7 @@ namespace LiveTv.Vdr.RestfulApi
 
         }
 
-        private static RecordingStatus CalcStatus(Timer timerRes)
+        private static RecordingStatus CalcStatus(TimerAPI timerRes)
         {
             return RecordingStatus.New; //TODO
         }
