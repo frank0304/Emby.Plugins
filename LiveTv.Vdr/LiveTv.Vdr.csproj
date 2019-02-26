@@ -1,53 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-<!-- <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"> -->
-  <!-- <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /> -->
   <PropertyGroup>
-    <!-- <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform> -->
-    <!-- <ProjectGuid>{AF3DF3F4-6C5D-4C5E-B3F7-5C66FB8D935E}</ProjectGuid> -->
-    <!-- <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LiveTv.Vdr</RootNamespace>
-    <AssemblyName>LiveTv.Vdr</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids> -->
+  
     <TargetFrameworks>netstandard2.0;</TargetFrameworks>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
-  <!-- <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup> -->
-  <!--ItemGroup>
-    <Compile Include="Configuration\PluginConfiguration.cs" />
-    <Compile Include="Configuration\Constants.cs" />
-    <Compile Include="LiveTvHelper.cs" />
-    <Compile Include="LiveTvService.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestfulApi\Converters.cs" />
-    <Compile Include="RestfulApi\Resources\ChannelResource.cs" />
-    <Compile Include="RestfulApi\Resources\ChannelsResource.cs" />
-    <Compile Include="RestfulApi\Resources\EventsResource.cs" />
-    <Compile Include="RestfulApi\Resources\InfoResource.cs" />
-    <Compile Include="RestfulApi\Client\IRestfulApiClient.cs" />
-    <Compile Include="RestfulApi\Client\VdrRestfulApiClient.cs" />
-    <Compile Include="RestfulApi\Resources\IRootResource.cs" />
-    <Compile Include="RestfulApi\Resources\RecordingsResource.cs" />
-    <Compile Include="RestfulApi\Resources\TimersResource.cs" />
-  </ItemGroup>-->
-  <!--ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>-->
   <ItemGroup> 
-    <PackageReference Include="mediabrowser.server.core" Version="4.0.0.0-beta" />
+    <PackageReference Include="mediabrowser.server.core" Version="4.0.0.2" />
     <PackageReference Include="System.Memory" Version="4.5.1" />
   </ItemGroup>
   <ItemGroup>
@@ -58,16 +17,4 @@
     <EmbeddedResource Include="Configuration\PluginConfigurationPage.html" />
     <EmbeddedResource Include="vdrlogo.png" />
   </ItemGroup>
-  <!-- <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" /> -->
-  <!--PropertyGroup>
-   <PostBuildEvent>xcopy $(TargetPath) "C:\Users\Fire\AppData\Roaming\Emby-Server\plugins" /y</PostBuildEvent>
-  </PropertyGroup> -->
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
