@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LiveTv.Vdr.RestfulApi.Resources;
 using MediaBrowser.Controller.LiveTv;
 using MediaBrowser.Model.LiveTv;
@@ -29,12 +30,12 @@ namespace LiveTv.Vdr.RestfulApi
             return new ProgramInfo()
             {
                 ChannelId = eventRes.Channel,
-                Id = eventRes.Channel + eventRes.Id.ToString(),
+                Id = eventRes.Id.ToString(),
                 Name = eventRes.Title,
                 Overview = eventRes.Description,
                 StartDate = UnixTimeStampToDateTime(eventRes.Start_time).ToUniversalTime(),
                 EndDate = UnixTimeStampToDateTime(eventRes.Start_time + eventRes.Duration).ToUniversalTime(),
-
+                
                 EpisodeTitle = eventRes.Short_text, //TODO: check if correct data
 
                 IsHD = eventRes.Channel_name.ToLower().Contains("hd"),
@@ -50,37 +51,51 @@ namespace LiveTv.Vdr.RestfulApi
             };
         }
 
-        internal static RecordingInfo RecordingResourceToRecordingInfo(RecordingResource recRes)
+        internal static MyRecordingInfo RecordingResourceToRecordingInfo(RecordingResource recRes)
         {
-            return new RecordingInfo()
-            {                
+            var Genre = recRes.Event_short_text;
+            // split multiple entrys
+            List<string> GenreList= new List<string>(Genre.Split(' '));
+            return new MyRecordingInfo()
+            {   
+                Inode = recRes.Inode,
+                Path = recRes.File_name,              
                 Id = recRes.File_name,
                 ChannelId = recRes.Channel_id,
                 Name = recRes.Event_title,
-                EpisodeTitle = recRes.Event_short_text,
+                Genres = GenreList,
+                EpisodeTitle = recRes.Event_title,
                 Overview = recRes.Event_description,
                 StartDate = UnixTimeStampToDateTime(recRes.Event_start_time),
                 EndDate = UnixTimeStampToDateTime(recRes.Event_start_time + recRes.Event_duration)
             };
         }
 
-        internal static TimerInfo TimerResourceToTimerInfo(Timer timerRes)
+        internal static TimerInfo TimerResourceToTimerInfo(TimerAPI timerRes, EventResource eventInfo)
         {
+            var timerStartDate = DateTime.Parse(timerRes.Start_timestamp);
+            var timerEndDate = DateTime.Parse(timerRes.Stop_timestamp);
+            var eventStartDate = UnixTimeStampToDateTime(eventInfo.Start_time);
+            var eventEndDate = UnixTimeStampToDateTime(eventInfo.Start_time + eventInfo.Duration);
+            var PrePaddingTime = eventStartDate - timerStartDate;
+            var PostPaddingTime = timerEndDate - eventEndDate;
             return new TimerInfo()
             {
                 Name = timerRes.Filename,
                 ChannelId = timerRes.Channel,
                 Id = timerRes.Id,
                 Status = CalcStatus(timerRes),
-                StartDate = DateTime.Parse(timerRes.Start_timestamp),
-                EndDate = DateTime.Parse(timerRes.Stop_timestamp),
+                StartDate = timerStartDate,
+                EndDate = timerEndDate,
                 Priority = timerRes.Priority,
+                PrePaddingSeconds = PrePaddingTime.Hours / 3600 + PrePaddingTime.Minutes * 60 + PrePaddingTime.Seconds ,
+                PostPaddingSeconds = PostPaddingTime.Hours / 3600 + PostPaddingTime.Minutes * 60 + PostPaddingTime.Seconds ,
                 //Overview //TODO
             };
 
         }
 
-        private static RecordingStatus CalcStatus(Timer timerRes)
+        private static RecordingStatus CalcStatus(TimerAPI timerRes)
         {
             return RecordingStatus.New; //TODO
         }

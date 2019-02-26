@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>VDR LiveTV</title>
+</head>
+<body>
+
+    <div data-role="page" class="page type-interior pluginConfigurationPage VrdLiveTVConfigurationPage">
+        <div data-role="content">
+            <div class="content-primary">
+                <form class="VDRConfigurationForm">
+                    <ul class="ulForm" data-role="listview">
+                        <li>
+                            <label for="txtRestfulAPI_address">
+                                VDR Restfulapi Address :
+                            </label>
+                            <input type="text" id="txtVDRRestfulAPI_address" name="txtVDRRestfulAPI_address" />
+                        </li>     
+                        <li>
+                            <label for="txtStreamdevAPI_address">
+                                VDR Streamdev Address :
+                            </label>
+                            <input type="text" id="txtVDRStreamdev_address" name="txtVDRStreamdev_address" />
+                        </li>
+                        <li>
+                            <button type="submit" data-theme="b">Save</button>
+                            <button type="button" onclick="history.back();">Cancel</button>
+                        </li>                                                              
+                    </ul>
+                </form>
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+
+            var VdrLiveTVConfigurationPageVar = {
+                pluginUniqueId: "3086D448-45FD-42EF-9446-F3E1B6960E36"
+            };
+
+            $('.VrdLiveTVConfigurationPage').on('pageshow', function (event) {
+                Dashboard.showLoadingMsg();
+                var page = this;
+                ApiClient.getPluginConfiguration(VdrLiveTVConfigurationPageVar.pluginUniqueId).then(function (config) {
+                    $('#txtVDRRestfulAPI_address', page).val(config.VDR_RestfulApi_BaseUrl || "http://localhost:8002");
+                    $('#txtVDRStreamdev_address', page).val(config.VDR_HttpStream_BaseUrl || "http://localhost:3000");                    
+                    Dashboard.hideLoadingMsg();
+                });
+            });
+
+            $('.VrdLiveTVConfigurationPage').on('submit', function (e) {
+                Dashboard.showLoadingMsg();
+                var form = this;
+                ApiClient.getPluginConfiguration(VdrLiveTVConfigurationPageVar.pluginUniqueId).then(function (config) {
+                    config.VDR_RestfulApi_BaseUrl = $('#txtVDRRestfulAPI_address', form).val();
+                    config.VDR_HttpStream_BaseUrl = $('#txtVDRStreamdev_address', form).val();                    
+                    ApiClient.updatePluginConfiguration(VdrLiveTVConfigurationPageVar.pluginUniqueId, config).then(Dashboard.processPluginConfigurationUpdateResult);
+                });
+                // Disable default form submission
+                return false;
+            });
+
+        </script>
+
+    </div>
+</body>
+</html>
