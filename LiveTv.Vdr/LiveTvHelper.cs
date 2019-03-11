@@ -18,23 +18,7 @@ namespace LiveTv.Vdr
                 Id = _liveStreams.ToString(CultureInfo.InvariantCulture),
                 Path = uri,
                 Protocol = MediaProtocol.Http,
-                SupportsProbing = false,
-                MediaStreams = new List<MediaStream>
-                {
-                    new MediaStream
-                    {
-                        Type = MediaStreamType.Video,
-                        // Set the index to -1 because we don't know the exact index of the video stream within the container
-                        Index = -1,                        
-                        IsInterlaced = true //set to true if unknown to enable deinterlacing
-                    },
-                    new MediaStream
-                    {
-                        Type = MediaStreamType.Audio,
-                        // Set the index to -1 because we don't know the exact index of the audio stream within the container
-                        Index = -1
-                    }
-                }
+                SupportsProbing = true,
             };
         }
     }
