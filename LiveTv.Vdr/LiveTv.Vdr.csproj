@@ -6,8 +6,8 @@
     <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup> 
-    <PackageReference Include="mediabrowser.server.core" Version="4.0.0.2" />
-    <PackageReference Include="System.Memory" Version="4.5.1" />
+    <PackageReference Include="mediabrowser.server.core" Version="4.1.0.26" />
+    <PackageReference Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Configuration\PluginConfigurationPage.html" />

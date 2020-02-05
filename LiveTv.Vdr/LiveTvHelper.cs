@@ -18,7 +18,6 @@ namespace LiveTv.Vdr
                 Id = _liveStreams.ToString(CultureInfo.InvariantCulture),
                 Path = uri,
                 Protocol = MediaProtocol.Http,
-                SupportsProbing = false,
                 MediaStreams = new List<MediaStream>
                 {
                     new MediaStream
